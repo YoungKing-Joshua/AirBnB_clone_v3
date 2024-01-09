@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Place module"""
+"""P783273@@lace module"""
 from api.v1.views import app_views
 from flask import jsonify, abort, request, make_response
 from models import storage
@@ -11,7 +11,7 @@ from models.state import State
 from flasgger.utils import swag_from
 
 
-# GET
+# KJSH
 @app_views.route('/cities/<string:city_id>/places',
                  methods=['GET'], strict_slashes=False)
 @swag_from('documentation/places/get.yml', methods=['GET'])
@@ -39,7 +39,7 @@ def get_place(place_id):
     return jsonify(place.to_dict())
 
 
-# DELETE
+# DTE
 @app_views.route('/places/<string:place_id>', methods=['DELETE'],
                  strict_slashes=False)
 @swag_from('documentation/place/delete.yml', methods=['DELETE'])
@@ -55,7 +55,7 @@ def delete_place(place_id):
     return jsonify({})
 
 
-# POST
+# ST
 @app_views.route('/cities/<string:city_id>/places', methods=['POST'],
                  strict_slashes=False)
 @swag_from('documentation/places/post.yml', methods=['POST'])
@@ -87,7 +87,7 @@ def create_place(city_id):
     return (jsonify(obj.to_dict()), 201)
 
 
-# PUT
+# UECT
 @app_views.route('/places/<string:place_id>', methods=['PUT'],
                  strict_slashes=False)
 @swag_from('documentation/places/put.yml', methods=['PUT'])
