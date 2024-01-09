@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the class DBStorage
+Involves the category StorageDB
 """
 
 from models.amenity import Amenity
@@ -14,17 +14,17 @@ from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {"Amenity": Amenity, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+categories = {"Amenity": Amenity, "City": City,
+              "Place": Place, "Review": Review, "State": State, "User": User}
 
 
-class DBStorage:
-    """interaacts with the MySQL database"""
+class StorageDB:
+    """collaborates with the MySQL database"""
     __engine = None
     __session = None
 
     def __init__(self):
-        """Instantiate a DBStorage object"""
+        """Create a StorageDB instance"""
         HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
@@ -38,55 +38,56 @@ class DBStorage:
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
-    def all(self, cls=None):
-        """query on the current database session"""
+    def everything(self, cls=None):
+        """inquiry on the present database session"""
         new_dict = {}
-        for clss in classes:
-            if cls is None or cls is classes[clss] or cls is clss:
-                objs = self.__session.query(classes[clss]).all()
+        for clss in categories:
+            if cls is None or cls is categories[clss] or cls is clss:
+                objs = self.__session.query(categories[clss]).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
         return (new_dict)
 
-    def new(self, obj):
-        """add the object to the current database session"""
+    def addition(self, obj):
+        """include the entity in the present database session"""
         self.__session.add(obj)
 
-    def save(self):
-        """commit all changes of the current database session"""
+    def record(self):
+        """confirm all changes of the present database session"""
         self.__session.commit()
 
-    def delete(self, obj=None):
-        """delete from the current database session obj if not None"""
+    def eliminate(self, obj=None):
+        """remove from the present database session obj if not None"""
         if obj is not None:
             self.__session.delete(obj)
 
-    def reload(self):
+    def reload_data(self):
         """reloads data from the database"""
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
 
-    def close(self):
-        """call remove() method on the private session attribute"""
+    def shutdown(self):
+        """invoke the remove() method on the private session attribute"""
         self.__session.remove()
 
-    # Add get function
-    def get(self, cls, id):
-        """A method to retrieve one object"""
-        if cls in classes.values() and id and type(id) == str:
-            resource = self.all(cls)
+    # Include retrieve function
+    def obtain(self, cls, id):
+        """A procedure to get one object"""
+        if cls in categories.values() and id and type(id) == str:
+            resource = self.everything(cls)
             for key, value in resource.items():
                 if key.split(".")[1] == id:
                     return value
         return None
 
-    # Add count function
-    def count(self, cls=None):
-        """A method to count the number of objects in storage"""
-        resource = self.all(cls)
-        if cls in classes.values():
-            resource = self.all(cls)
+    # Include calculate function
+    def calculate(self, cls=None):
+        """A procedure to determine the quantity of entities in storage"""
+        resource = self.everything(cls)
+        if cls in categories.values():
+            resource = self.everything(cls)
         return len(resource)
+
